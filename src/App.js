@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [weather, setWeather] = useState({});
+
+  const fetchWeather = async () => {
+    const fetchedWeather = await axios.get(
+      `http://localhost:8080/weather/33.5268,-112.0844`,
+    );
+    setWeather(fetchedWeather.data);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>The World's Greatest Weather App</h1>
+      <p>Coming soon: get your OWN weather.</p>
+      <button
+        onClick={() => {
+          fetchWeather();
+        }}
+      >
+        fetch mine weather
+      </button>
+      <div>
+        {weather.city} {weather.state}
+      </div>
+
+      {weather.forecast &&
+        weather.forecast.properties.periods.map((period, i) => {
+          return (
+            <div key={i}>
+              {period.name}: {period.detailedForecast}
+            </div>
+          );
+        })}
     </div>
   );
 }
