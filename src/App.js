@@ -2,13 +2,15 @@ import axios from "axios";
 import { useState } from "react";
 import "./App.css";
 
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? `https://weather-api-acj3.onrender.com/weather`
+    : `http://localhost:8080/weather`;
 function App() {
   const [weather, setWeather] = useState({});
 
   const fetchWeather = async () => {
-    const fetchedWeather = await axios.get(
-      `${process.env.REACT_APP_API_URL}/33.5268,-112.0844`,
-    );
+    const fetchedWeather = await axios.get(`${API_URL}/33.5268,-112.0844`);
     setWeather(fetchedWeather.data);
   };
   return (
