@@ -6,7 +6,9 @@ function App() {
   const [weather, setWeather] = useState({});
 
   const fetchWeather = async () => {
-    const fetchedWeather = await axios.get(`${process.env.API_URL}`);
+    const fetchedWeather = await axios.get(
+      `${process.env.API_URL}/33.5268,-112.0844`,
+    );
     setWeather(fetchedWeather.data);
   };
   return (
