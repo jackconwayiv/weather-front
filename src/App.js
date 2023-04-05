@@ -7,7 +7,7 @@ function App() {
 
   const fetchWeather = async () => {
     const fetchedWeather = await axios.get(
-      `${process.env.API_URL}/33.5268,-112.0844`,
+      `${process.env.REACT_APP_API_URL}/33.5268,-112.0844`,
     );
     setWeather(fetchedWeather.data);
   };
