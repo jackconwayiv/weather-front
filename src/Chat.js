@@ -32,7 +32,7 @@ const Chat = ({ city, state, weather }) => {
       };
       initialQuery();
     }
-  }, []);
+  }, [city, state, weather]);
 
   const renderMessages = () => {
     if (loading) {
