@@ -28,7 +28,7 @@ const Chat = () => {
     event.preventDefault();
     try {
       setLoading(true);
-      let res = await axios.post(`${API_URL}/`, {
+      let res = await axios.post(`${API_URL}`, {
         message: { role: "user", content: userContent },
       });
       setMessages(res.data.completion.content.split("\n"));
