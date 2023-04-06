@@ -1,12 +1,12 @@
 import "./App.css";
 import Chat from "./Chat";
-import Weather from "./Weather";
+import TravelGuide from "./TravelGuide";
 
 function App() {
   return (
     <div className="App">
       <div className="weatherColumn">
-        <Weather />
+        <TravelGuide />
       </div>
       <div className="chatColumn">
         <Chat />
