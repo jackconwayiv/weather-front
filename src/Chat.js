@@ -12,7 +12,7 @@ const Chat = ({ city, state, weather }) => {
   const [userContent, setUserContent] = useState("");
 
   useEffect(() => {
-    const firstQuestion = `I'm logging in to the travel app from ${city} ${state}. Today's weather is: ${weather} What are some fun things I could do in my area?`;
+    const firstQuestion = `Hello from ${city}, ${state}! Today's weather here is: ${weather} What are some fun things I could do in my area?`;
     if (weather) {
       const initialQuery = async () => {
         let newMessage = { role: "user", content: firstQuestion };
