@@ -9,20 +9,19 @@ const Weather = () => {
       : `http://localhost:8080/weather`;
 
   const fetchWeather = async () => {
-    const fetchedWeather = await axios.get(`${API_URL}/33.5268,-112.0844`);
+    const fetchedWeather = await axios.get(`${API_URL}`);
     setWeather(fetchedWeather.data);
   };
 
   return (
     <div>
       <h1>The World's Greatest Weather App</h1>
-      <p>Coming soon: get your OWN weather.</p>
       <button
         onClick={() => {
           fetchWeather();
         }}
       >
-        fetch mine weather
+        fetch thine weather
       </button>
       <div>
         {weather.city} {weather.state}
