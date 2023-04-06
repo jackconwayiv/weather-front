@@ -1,7 +1,14 @@
 * {
-  margin: 3px;
-  padding: 3px;
+  margin: 2px;
+  padding: 2px;
+  font-size: small;
 }
+
+input {
+  height: 100px;
+  width: 100%;
+}
+
 .App {
   display: flex;
   flex-direction: row;
@@ -54,9 +61,21 @@ form, button {
 }
 
 .weatherColumn {
-  width: 60%
+  width: 50%;
+  text-align: justify;
 }
 
 .chatColumn {
-  width:40%
+  width:50%;
+}
+
+.userChat {
+  color: purple;
+  font-weight: 600;
+  text-align: justify;
+}
+
+.botChat {
+  color: black;
+  text-align: justify;
 }

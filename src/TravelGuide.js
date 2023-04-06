@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Chat from "./Chat";
 
 const TravelGuide = () => {
   const [location, setLocation] = useState({});
@@ -40,23 +41,36 @@ const TravelGuide = () => {
   }, []);
 
   return (
-    <div>
-      <h1>
-        Weather for{" "}
-        {location && location.city
-          ? `${location.city}, ${location.state}`
+    <div className="App">
+      <div className="weatherColumn">
+        <h1>
+          Weather for{" "}
+          {location && location.city
+            ? `${location.city}, ${location.state}`
+            : `loading`}
+        </h1>
+        {weather && weather.properties
+          ? // JSON.stringify(weather.properties)
+            weather.properties.periods.map((period, i) => {
+              return (
+                <div key={i}>
+                  {period.name}: {period.detailedForecast}
+                </div>
+              );
+            })
           : `loading`}
-      </h1>
-      {weather && weather.properties
-        ? // JSON.stringify(weather.properties)
-          weather.properties.periods.map((period, i) => {
-            return (
-              <div key={i}>
-                {period.name}: {period.detailedForecast}
-              </div>
-            );
-          })
-        : `loading`}
+      </div>
+      {weather && weather.properties ? (
+        <div className="chatColumn">
+          <Chat
+            city={location && location.city}
+            state={location && location.state}
+            weather={weather && weather.properties.periods[0].detailedForecast}
+          />
+        </div>
+      ) : (
+        <div className="chatColumn">loading</div>
+      )}
     </div>
   );
 };

@@ -1,39 +1,76 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://weather-api-acj3.onrender.com/chat"
     : "http://localhost:8080/chat";
 
-const Chat = () => {
+const Chat = ({ city, state, weather }) => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [userContent, setUserContent] = useState("");
+
+  useEffect(() => {
+    const firstQuestion = `I'm logging in to the travel app from ${city} ${state}. Today's weather is: ${weather} What are some fun things I could do in my area?`;
+    if (weather) {
+      const initialQuery = async () => {
+        let newMessage = { role: "user", content: firstQuestion };
+        let newMessages = [newMessage];
+        setMessages(newMessages);
+        try {
+          setLoading(true);
+          let res = await axios.post(`${API_URL}`, {
+            messages: newMessages,
+          });
+          setMessages([...newMessages, res.data.completion]);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      initialQuery();
+    }
+  }, []);
 
   const renderMessages = () => {
     if (loading) {
       return <p>loading</p>;
     }
     return (
-      <div>
-        {messages.map((line, i) => (
-          <p key={i}>{line}</p>
+      <>
+        {messages.map((message, i) => (
+          <div
+            key={i}
+            className={message.role === "user" ? "userChat" : "botChat"}
+          >
+            {message &&
+              message.content &&
+              message.content
+                .split("\n")
+                .map((line, k) => <p key={k}>{line}</p>)}
+          </div>
         ))}
-      </div>
+      </>
     );
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    let newMessage = { role: "user", content: userContent };
+    let oldMessages = [...messages];
+    let newMessages = [...oldMessages, newMessage];
+    setMessages(newMessages);
     try {
       setLoading(true);
       let res = await axios.post(`${API_URL}`, {
-        message: { role: "user", content: userContent },
+        messages: newMessages,
       });
-      setMessages(res.data.completion.content.split("\n"));
+      setMessages([newMessage, res.data.completion, ...oldMessages]);
+      setUserContent("");
     } catch (error) {
-      console.log({ error });
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -41,14 +78,18 @@ const Chat = () => {
 
   return (
     <div>
-      <h2>RIDDLE CHAT-GPT THIS:</h2>
-      <p>Go ahead. Ask a question.</p>
+      <h2>A.I. TRAVEL AGENT</h2>
+      <p>Ask for travel recommendations!</p>
+      <p>
+        NOTE: This AI may not have the most recent information -- be sure to
+        phone ahead!
+      </p>
       <form onSubmit={handleSubmit}>
         <input
           value={userContent}
           onChange={(event) => setUserContent(event.target.value)}
         />
-        <button>{loading ? "loading" : "ask"}</button>
+        <button disabled={loading}>{loading ? "loading" : "ask"}</button>
       </form>
       {renderMessages()}
     </div>
